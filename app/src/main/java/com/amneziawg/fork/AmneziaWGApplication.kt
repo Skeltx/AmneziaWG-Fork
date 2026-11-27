@@ -1,6 +1,7 @@
 package com.amneziawg.fork
 
 import android.app.Application
+import android.util.Log
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 

@@ -7,6 +7,8 @@ import android.net.VpnService
 import android.os.Build
 import android.os.ParcelFileDescriptor
 import android.util.Log
+import androidx.core.content.ContextCompat
+import java.net.InetSocketAddress
 import com.amneziawg.fork.db.AmneziaDatabase
 import com.amneziawg.fork.model.RoutingAction
 import com.amneziawg.fork.model.RoutingConfig
@@ -15,9 +17,6 @@ import com.amneziawg.fork.model.RoutingRuleType
 import com.wireguard.android.backend.GoBackend
 import com.wireguard.android.backend.WgQuickBackend
 import com.wireguard.config.Config
-import com.wireguard.config.InterfaceConfig
-import com.wireguard.config.PeerConfig
-import com.wireguard.tunnel.VpnTunnel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -124,27 +123,20 @@ class AmneziaVPNService : VpnService() {
 
     private fun buildWireGuardConfig(config: RoutingConfig): Config {
         val wg = config.wireguardConfig
-
-        val interfaceConfig = InterfaceConfig(
-            privateKey = wg.privateKey,
-            addresses = wg.address.map { parseIpPrefix(it) }.toTypedArray(),
-            dns = wg.dns.map { InetAddress.getByName(it) }.toTypedArray(),
-            mtu = wg.mtu,
-            listenPort = 0 // Auto-assign
-        )
-
-        val peerConfig = PeerConfig(
-            publicKey = wg.publicKey,
-            endpoint = parseEndpoint(wg.endpoint),
-            allowedIPs = wg.allowedIPs.map { parseIpPrefix(it) }.toTypedArray(),
-            persistentKeepalive = wg.persistentKeepalive
-        )
-
-        return Config(
-            name = config.name,
-            interfaceConfig = interfaceConfig,
-            peers = arrayOf(peerConfig)
-        )
+        val text = buildString {
+            appendLine("[Interface]")
+            appendLine("PrivateKey = ${wg.privateKey}")
+            wg.address.forEach { appendLine("Address = $it") }
+            if (wg.dns.isNotEmpty()) appendLine("DNS = ${wg.dns.joinToString(", ")}")
+            if (wg.mtu > 0) appendLine("MTU = ${wg.mtu}")
+            appendLine()
+            appendLine("[Peer]")
+            appendLine("PublicKey = ${wg.publicKey}")
+            appendLine("AllowedIPs = ${wg.allowedIPs.joinToString(", ")}")
+            if (wg.endpoint.isNotBlank()) appendLine("Endpoint = ${wg.endpoint}")
+            if (wg.persistentKeepalive > 0) appendLine("PersistentKeepalive = ${wg.persistentKeepalive}")
+        }
+        return Config.parse(java.io.BufferedReader(java.io.StringReader(text)))
     }
 
     private fun parseIpPrefix(cidr: String): Pair<InetAddress, Int> {
@@ -162,34 +154,8 @@ class AmneziaVPNService : VpnService() {
     }
 
     private fun establishVpnTunnel(config: Config) {
-        val builder = android.net.VpnService.Builder()
-            .setSession("AmneziaWG-${config.name}")
-            .addDnsServer("1.1.1.1")
-            .addDnsServer("8.8.8.8")
-
-        // Add all allowed IPs as routes
-        config.interfaceConfig.addresses.forEach { (addr, prefix) ->
-            builder.addRoute(addr.hostAddress, prefix)
-        }
-
-        config.peers.first().allowedIPs.forEach { (addr, prefix) ->
-            builder.addRoute(addr.hostAddress, prefix)
-        }
-
-        // Exclude local networks if needed
-        addDefaultExclusions(builder)
-
-        tunnelFd = builder.establish()
-        protect(tunnelFd!!.fileDescriptor)
-
-        // Start WireGuard backend
-        vpnTunnel = VpnTunnel(
-            tunnelFd!!,
-            config,
-            backend!!,
-            Executors.newSingleThreadExecutor(),
-            this
-        )
+        // The WireGuard backend establishes and manages the tun device itself.
+        vpnTunnel = VpnTunnel("amneziawg", config, backend!!, Executors.newSingleThreadExecutor())
         vpnTunnel?.start()
     }
 
@@ -340,6 +306,4 @@ class PacketProcessor {
     }
 }
 
-// Extension to protect socket
-import androidx.core.content.ContextCompat
-import java.net.InetSocketAddress
+// End of file
