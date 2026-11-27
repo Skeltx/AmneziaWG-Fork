@@ -2,6 +2,7 @@
 REM Скрипт для генерации keystore для release-сборки (Windows)
 REM Запуск: scripts\generate-keystore.bat
 
+chcp 65001 >nul
 setlocal enabledelayedexpansion
 
 set KEYSTORE_FILE=release.keystore
