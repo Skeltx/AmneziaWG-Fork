@@ -92,6 +92,9 @@ dependencies {
     val biometric = "1.2.0-alpha03"
     val workManager = "2.9.0"
 
+    // Material Components (XML themes)
+    implementation("com.google.android.material:material:1.12.0")
+
     // AndroidX Core
     implementation("androidx.core:core-ktx:$coreKtx")
     implementation("androidx.appcompat:appcompat:1.6.1")
