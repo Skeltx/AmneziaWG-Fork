@@ -2,6 +2,9 @@
 
 Полнофункциональный Android-клиент WireGuard с продвинутым контролем маршрутизации (split tunneling).
 
+**Репозиторий:** https://github.com/Skeltx/AmneziaWG-Fork  
+**Лицензия:** MIT License
+
 ## 🎯 Ключевые особенности
 
 ### Полный контроль маршрутизации
@@ -52,23 +55,20 @@
 
 ```bash
 # Клонирование
-git clone https://github.com/yourusername/AmneziaWG-Fork.git
+git clone https://github.com/Skeltx/AmneziaWG-Fork.git
 cd AmneziaWG-Fork
 
-# Сборка debug APK
+# Сборка debug APK (работает сразу)
 ./gradlew assembleDebug
 
-# Сборка release APK (требует настроенного keystore)
+# Сборка release APK (требует keystore)
+./scripts/generate-keystore.sh   # или .bat на Windows — создаст keystore + покажет секреты для GitHub
 ./gradlew assembleRelease
 ```
 
-### Переменные окружения для Release сборки
-```bash
-export KEYSTORE_PATH=/path/to/keystore.jks
-export KEYSTORE_PASSWORD=your_keystore_password
-export KEY_ALIAS=your_key_alias
-export KEY_PASSWORD=your_key_password
-```
+### CI/CD (GitHub Actions)
+- **Debug APK** — собирается автоматически на каждый push/PR (артефакт на 7 дней)
+- **Release APK** — собирается только если настроены секреты в GitHub (см. ниже)
 
 ## 📂 Структура проекта
 
@@ -107,9 +107,35 @@ app/
 ### Кэширование решений
 Для производительности решения кэшируются с TTL и очисткой старых записей.
 
+## 🔐 Release Keystore (для подписи APK)
+
+Для публикации в Play Store нужен подписанный Release APK. Keystore **не хранится в репозитории** (в .gitignore).
+
+### Генерация
+```bash
+# Linux/macOS/Git Bash
+./scripts/generate-keystore.sh
+
+# Windows CMD/PowerShell
+scripts\generate-keystore.bat
+```
+Скрипт создаст `release.keystore` и покажет 4 значения для GitHub Secrets.
+
+### Настройка GitHub Secrets (для авто-сборки Release)
+В GitHub: **Settings → Secrets and variables → Actions → New repository secret**
+
+| Secret | Описание |
+|--------|----------|
+| `KEYSTORE_BASE64` | Base64 содержимое keystore (выдаёт скрипт) |
+| `KEYSTORE_PASSWORD` | Пароль от keystore |
+| `KEY_ALIAS` | Alias ключа (обычно `release`) |
+| `KEY_PASSWORD` | Пароль от ключа |
+
+**Без секретов** — Release job просто пропускается, Debug собирается всегда.
+
 ## 📄 Лицензия
 
-Этот проект является форком AmneziaWG и распространяется под лицензией GPL-3.0.
+MIT License — см. [LICENSE](LICENSE)
 
 ## 🤝 Вклад в проект
 
