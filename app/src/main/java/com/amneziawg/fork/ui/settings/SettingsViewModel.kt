@@ -3,10 +3,7 @@ package com.amneziawg.fork.ui.settings
 import android.app.Application
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.getString
-import androidx.datastore.preferences.core.mutations
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.rxPreferencesDataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.amneziawg.fork.db.AmneziaDatabase
@@ -25,7 +22,7 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     private val application: Application,
     private val database: AmneziaDatabase,
-    private val dataStore: androidx.datastore.preferences.DataStore<androidx.datastore.preferences.core.Preferences>
+    private val dataStore: androidx.datastore.core.DataStore<androidx.datastore.preferences.core.Preferences>
 ) : ViewModel() {
 
     private val AUTO_RECONNECT_KEY = booleanPreferencesKey("auto_reconnect")
