@@ -88,19 +88,19 @@ jobs:
           path: app/build/outputs/apk/debug/*.apk
           retention-days: 7
 
-    - name: Download Debug APK artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: debug-apk
-        path: ./debug-apk
+      - name: Download Debug APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: debug-apk
+          path: ./debug-apk
 
-    - name: Create GitHub Release
-      if: github.ref == 'refs/heads/main'
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: v${{ github.run_number }}
-        name: Release v${{ github.run_number }}
-        draft: false
-        prerelease: false
-        files: ./debug-apk/app-debug.apk
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GitHub Release
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ github.run_number }}
+          name: Release v${{ github.run_number }}
+          draft: false
+          prerelease: false
+          files: ./debug-apk/app-debug.apk
+          token: ${{ secrets.GITHUB_TOKEN }}
