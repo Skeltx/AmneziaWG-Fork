@@ -148,7 +148,7 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:$workManager")
 
     // WireGuard
-    implementation("com.wireguard.android:wireguard-android:1.0.20240115")
+    implementation("com.wireguard.android:tunnel:1.0.20230706")
 
     // Logging
     implementation("com.jakewharton.timber:timber:5.0.1")
