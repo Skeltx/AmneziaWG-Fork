@@ -60,3 +60,4 @@ gradle/wrapper/gradle-wrapper.jar
 
 # Release
 release/
+!gradle/wrapper/gradle-wrapper.jar
