@@ -1,9 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.devtools.ksp")
-    id("kotlinx-serialization")
-    id("io.gitlab.arturbosch.detekt") version "1.23.4" apply false
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -69,23 +69,6 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1,LICENSE,LICENSE.txt,NOTICE,NOTICE.txt}"
         }
     }
-}
-
-detekt {
-    config = files("$rootDir/detekt.yml")
-    baseline = file("$rootDir/detekt-baseline.xml")
-    buildUponDefaultConfig = true
-    parallel = true
-}
-
-tasks.named("detekt") {
-    reports {
-        html.enabled = true
-        xml.enabled = true
-        txt.enabled = false
-        sarif.enabled = true
-    }
-}
 }
 
 dependencies {
