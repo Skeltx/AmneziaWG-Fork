@@ -1,5 +1,11 @@
 package com.amneziawg.fork.ui.routing
 
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.foundation.text.KeyboardOptions
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -86,7 +92,7 @@ fun DnsSettingsScreen(viewModel: DnsSettingsViewModel) {
         }
     ) { padding ->
         Column(
-            modifier = androidx.compose.foundation.layout.Modifier
+            modifier = androidx.compose.ui.Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .padding(16.dp),
@@ -94,10 +100,10 @@ fun DnsSettingsScreen(viewModel: DnsSettingsViewModel) {
         ) {
             // DNS Provider Selection
             Card(
-                modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+                modifier = androidx.compose.ui.Modifier.fillMaxWidth()
             ) {
                 androidx.compose.foundation.layout.Column(
-                    modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp),
+                    modifier = androidx.compose.ui.Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Text(text = stringResource(R.string.dns_provider), fontSize = 18.sp, fontWeight = FontWeight.Bold)
@@ -155,10 +161,10 @@ fun DnsSettingsScreen(viewModel: DnsSettingsViewModel) {
             // Custom DNS Input
             if (uiState.selectedProvider == DnsProvider.CUSTOM) {
                 Card(
-                    modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+                    modifier = androidx.compose.ui.Modifier.fillMaxWidth()
                 ) {
                     androidx.compose.foundation.layout.Column(
-                        modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp),
+                        modifier = androidx.compose.ui.Modifier.padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         Text(text = stringResource(R.string.custom_dns_servers), fontSize = 18.sp, fontWeight = FontWeight.Bold)
@@ -169,7 +175,7 @@ fun DnsSettingsScreen(viewModel: DnsSettingsViewModel) {
                             label = { Text(text = stringResource(R.string.primary_dns)) },
                             placeholder = { Text(text = "1.1.1.1") },
                             singleLine = true,
-                            modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth(),
+                            modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
                             keyboardOptions = androidx.compose.ui.text.input.KeyboardOptions(
                                 keyboardType = androidx.compose.ui.text.input.KeyboardType.Number
                             )
@@ -181,7 +187,7 @@ fun DnsSettingsScreen(viewModel: DnsSettingsViewModel) {
                             label = { Text(text = stringResource(R.string.secondary_dns)) },
                             placeholder = { Text(text = "8.8.8.8") },
                             singleLine = true,
-                            modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+                            modifier = androidx.compose.ui.Modifier.fillMaxWidth()
                         )
 
                         OutlinedTextField(
@@ -190,7 +196,7 @@ fun DnsSettingsScreen(viewModel: DnsSettingsViewModel) {
                             label = { Text(text = stringResource(R.string.tertiary_dns)) },
                             placeholder = { Text(text = "9.9.9.9") },
                             singleLine = true,
-                            modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+                            modifier = androidx.compose.ui.Modifier.fillMaxWidth()
                         )
 
                         Button(
@@ -204,10 +210,10 @@ fun DnsSettingsScreen(viewModel: DnsSettingsViewModel) {
 
             // Additional Options
             Card(
-                modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+                modifier = androidx.compose.ui.Modifier.fillMaxWidth()
             ) {
                 androidx.compose.foundation.layout.Column(
-                    modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp),
+                    modifier = androidx.compose.ui.Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Text(text = stringResource(R.string.additional_options), fontSize = 18.sp, fontWeight = FontWeight.Bold)
@@ -274,7 +280,7 @@ fun DnsProviderOption(
     onClick: () -> Unit
 ) {
     androidx.compose.material3.Card(
-        modifier = androidx.compose.foundation.layout.Modifier
+        modifier = androidx.compose.ui.Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .clickable(onClick = onClick),
@@ -283,7 +289,7 @@ fun DnsProviderOption(
         )
     ) {
         androidx.compose.foundation.layout.Row(
-            modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp),
+            modifier = androidx.compose.ui.Modifier.padding(16.dp),
             horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -294,7 +300,7 @@ fun DnsProviderOption(
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    modifier = androidx.compose.foundation.layout.Modifier.size(24.dp),
+                    modifier = androidx.compose.ui.Modifier.size(24.dp),
                     tint = if (isSelected) androidx.compose.material3.MaterialTheme.colorScheme.primary else androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 androidx.compose.foundation.layout.Column {
@@ -321,7 +327,7 @@ fun SettingRow(
     trailing: @Composable () -> Unit
 ) {
     androidx.compose.foundation.layout.Row(
-        modifier = androidx.compose.foundation.layout.Modifier
+        modifier = androidx.compose.ui.Modifier
             .fillMaxWidth()
             .padding(16.dp),
         horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween,
@@ -334,7 +340,7 @@ fun SettingRow(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                modifier = androidx.compose.foundation.layout.Modifier.size(24.dp),
+                modifier = androidx.compose.ui.Modifier.size(24.dp),
                 tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
             )
             androidx.compose.foundation.layout.Column {

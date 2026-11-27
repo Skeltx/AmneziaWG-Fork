@@ -1,5 +1,11 @@
 package com.amneziawg.fork.ui.main
 
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.foundation.text.KeyboardOptions
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -118,7 +124,7 @@ fun MainScreen(
         }
     ) { padding ->
         Column(
-            modifier = androidx.compose.foundation.layout.Modifier
+            modifier = androidx.compose.ui.Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .padding(16.dp),
@@ -174,11 +180,11 @@ fun ConnectionStatusCard(
     val context = LocalContext.current
 
     Card(
-        modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth(),
+        modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
         elevation = androidx.compose.foundation.layout.CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
         androidx.compose.foundation.layout.Column(
-            modifier = androidx.compose.foundation.layout.Modifier.padding(24.dp),
+            modifier = androidx.compose.ui.Modifier.padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Status Icon
@@ -193,11 +199,11 @@ fun ConnectionStatusCard(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                modifier = androidx.compose.foundation.layout.Modifier.size(64.dp),
+                modifier = androidx.compose.ui.Modifier.size(64.dp),
                 tint = color
             )
 
-            Spacer(modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp))
+            Spacer(modifier = androidx.compose.ui.Modifier.padding(16.dp))
 
             Text(
                 text = when (state) {
@@ -212,7 +218,7 @@ fun ConnectionStatusCard(
                 color = color
             )
 
-            Spacer(modifier = androidx.compose.foundation.layout.Modifier.padding(8.dp))
+            Spacer(modifier = androidx.compose.ui.Modifier.padding(8.dp))
 
             activeConfig?.let {
                 Text(
@@ -222,7 +228,7 @@ fun ConnectionStatusCard(
                 )
             }
 
-            Spacer(modifier = androidx.compose.foundation.layout.Modifier.padding(24.dp))
+            Spacer(modifier = androidx.compose.ui.Modifier.padding(24.dp))
 
             // Main Toggle Button
             Button(
@@ -240,7 +246,7 @@ fun ConnectionStatusCard(
                         else -> {}
                     }
                 },
-                modifier = androidx.compose.foundation.layout.Modifier
+                modifier = androidx.compose.ui.Modifier
                     .fillMaxWidth()
                     .height(56.dp),
                 enabled = state != AmneziaVPNService.ConnectionState.CONNECTING && state != AmneziaVPNService.ConnectionState.DISCONNECTING,
@@ -264,7 +270,7 @@ fun ConnectionStatusCard(
             }
 
             if (state == AmneziaVPNService.ConnectionState.ERROR) {
-                Spacer(modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp))
+                Spacer(modifier = androidx.compose.ui.Modifier.padding(16.dp))
                 Text(
                     text = context.getString(R.string.connection_error),
                     fontSize = 14.sp,
@@ -281,20 +287,20 @@ fun ActiveConfigCard(
     onDisconnect: () -> Unit
 ) {
     Card(
-        modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+        modifier = androidx.compose.ui.Modifier.fillMaxWidth()
     ) {
         androidx.compose.foundation.layout.Column(
-            modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp)
+            modifier = androidx.compose.ui.Modifier.padding(16.dp)
         ) {
             androidx.compose.foundation.layout.Row(
-                modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth(),
+                modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
                 horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween
             ) {
                 Text(text = config.name, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 Text(text = config.wireguardConfig.endpoint, fontSize = 14.sp, color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant)
             }
 
-            Spacer(modifier = androidx.compose.foundation.layout.Modifier.padding(8.dp))
+            Spacer(modifier = androidx.compose.ui.Modifier.padding(8.dp))
 
             androidx.compose.foundation.layout.Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -317,11 +323,11 @@ fun ConfigListSection(
     val context = LocalContext.current
 
     Column(
-        modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth(),
+        modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         androidx.compose.foundation.layout.Row(
-            modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth(),
+            modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
             horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween
         ) {
             Text(text = context.getString(R.string.configs), fontSize = 20.sp, fontWeight = FontWeight.Bold)
@@ -332,10 +338,10 @@ fun ConfigListSection(
 
         if (configs.isEmpty()) {
             Card(
-                modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+                modifier = androidx.compose.ui.Modifier.fillMaxWidth()
             ) {
                 androidx.compose.foundation.layout.Column(
-                    modifier = androidx.compose.foundation.layout.Modifier
+                    modifier = androidx.compose.ui.Modifier
                         .fillMaxWidth()
                         .padding(32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -343,16 +349,16 @@ fun ConfigListSection(
                     Icon(
                         imageVector = androidx.compose.material.icons.Icons.Default.VpnLock,
                         contentDescription = null,
-                        modifier = androidx.compose.foundation.layout.Modifier.size(48.dp),
+                        modifier = androidx.compose.ui.Modifier.size(48.dp),
                         tint = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                     )
-                    Spacer(modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp))
+                    Spacer(modifier = androidx.compose.ui.Modifier.padding(16.dp))
                     Text(
                         text = context.getString(R.string.no_configs),
                         fontSize = 16.sp,
                         color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    Spacer(modifier = androidx.compose.foundation.layout.Modifier.padding(8.dp))
+                    Spacer(modifier = androidx.compose.ui.Modifier.padding(8.dp))
                     Text(
                         text = context.getString(R.string.no_configs_hint),
                         fontSize = 14.sp,
@@ -362,7 +368,7 @@ fun ConfigListSection(
             }
         } else {
             androidx.compose.foundation.lazy.LazyColumn(
-                modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+                modifier = androidx.compose.ui.Modifier.fillMaxWidth()
             ) {
                 items(configs) { config ->
                     ConfigItem(
@@ -385,7 +391,7 @@ fun ConfigItem(
     onLongClick: () -> Unit
 ) {
     Card(
-        modifier = androidx.compose.foundation.layout.Modifier
+        modifier = androidx.compose.ui.Modifier
             .fillMaxWidth()
             .fillMaxSize(),
         colors = androidx.compose.material3.CardDefaults.cardColors(
@@ -393,7 +399,7 @@ fun ConfigItem(
         )
     ) {
         androidx.compose.foundation.layout.Row(
-            modifier = androidx.compose.foundation.layout.Modifier
+            modifier = androidx.compose.ui.Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
                 .clickable(onClick = onClick)
@@ -424,7 +430,7 @@ fun ConfigItem(
                         ) {}
                     }
                 }
-                Spacer(modifier = androidx.compose.foundation.layout.Modifier.padding(4.dp))
+                Spacer(modifier = androidx.compose.ui.Modifier.padding(4.dp))
                 Text(
                     text = "${config.wireguardConfig.endpoint} | Rules: ${config.rules.size}",
                     fontSize = 12.sp,
@@ -449,13 +455,13 @@ fun RoutingRulesSummaryCard(
     val context = LocalContext.context
 
     Card(
-        modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+        modifier = androidx.compose.ui.Modifier.fillMaxWidth()
     ) {
         androidx.compose.foundation.layout.Column(
-            modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp)
+            modifier = androidx.compose.ui.Modifier.padding(16.dp)
         ) {
             androidx.compose.foundation.layout.Row(
-                modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth(),
+                modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
                 horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween
             ) {
                 Text(text = context.getString(R.string.routing_rules), fontSize = 18.sp, fontWeight = FontWeight.Bold)
@@ -469,11 +475,11 @@ fun RoutingRulesSummaryCard(
                     text = context.getString(R.string.no_routing_rules),
                     fontSize = 14.sp,
                     color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = androidx.compose.foundation.layout.Modifier.padding(top = 8.dp)
+                    modifier = androidx.compose.ui.Modifier.padding(top = 8.dp)
                 )
             } else {
                 androidx.compose.foundation.lazy.LazyColumn(
-                    modifier = androidx.compose.foundation.layout.Modifier
+                    modifier = androidx.compose.ui.Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -486,7 +492,7 @@ fun RoutingRulesSummaryCard(
                             text = context.getString(R.string.and_more_rules, config.rules.size - 5),
                             fontSize = 12.sp,
                             color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = androidx.compose.foundation.layout.Modifier.padding(top = 4.dp)
+                            modifier = androidx.compose.ui.Modifier.padding(top = 4.dp)
                         )
                     }
                 }
@@ -498,7 +504,7 @@ fun RoutingRulesSummaryCard(
 @Composable
 fun RuleSummaryItem(rule: com.amneziawg.fork.model.RoutingRule) {
     androidx.compose.foundation.layout.Row(
-        modifier = androidx.compose.foundation.layout.Modifier
+        modifier = androidx.compose.ui.Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween
@@ -517,7 +523,7 @@ fun RuleSummaryItem(rule: com.amneziawg.fork.model.RoutingRule) {
                 else -> androidx.compose.material.icons.Icons.Default.Help
             }
 
-            Icon(imageVector = icon, contentDescription = null, modifier = androidx.compose.foundation.layout.Modifier.size(20.dp), tint = androidx.compose.material3.MaterialTheme.colorScheme.primary)
+            Icon(imageVector = icon, contentDescription = null, modifier = androidx.compose.ui.Modifier.size(20.dp), tint = androidx.compose.material3.MaterialTheme.colorScheme.primary)
 
             androidx.compose.foundation.layout.Column {
                 Text(text = rule.name, fontSize = 14.sp, fontWeight = FontWeight.Medium)
@@ -545,17 +551,17 @@ fun StatsCard(stats: com.amneziawg.fork.vpn.RoutingEngine.RoutingStats) {
     val context = LocalContext.current
 
     Card(
-        modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+        modifier = androidx.compose.ui.Modifier.fillMaxWidth()
     ) {
         androidx.compose.foundation.layout.Column(
-            modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp)
+            modifier = androidx.compose.ui.Modifier.padding(16.dp)
         ) {
             Text(text = context.getString(R.string.stats), fontSize = 18.sp, fontWeight = FontWeight.Bold)
 
-            Spacer(modifier = androidx.compose.foundation.layout.Modifier.padding(12.dp))
+            Spacer(modifier = androidx.compose.ui.Modifier.padding(12.dp))
 
             androidx.compose.foundation.layout.Row(
-                modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth(),
+                modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 StatItem(
@@ -581,7 +587,7 @@ fun StatsCard(stats: com.amneziawg.fork.vpn.RoutingEngine.RoutingStats) {
 @Composable
 fun StatItem(label: String, value: String, color: androidx.compose.ui.graphics.Color) {
     androidx.compose.foundation.layout.Column(
-        modifier = androidx.compose.foundation.layout.Modifier
+        modifier = androidx.compose.ui.Modifier
             .weight(1f)
             .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally

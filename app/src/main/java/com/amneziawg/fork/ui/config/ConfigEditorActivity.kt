@@ -1,5 +1,11 @@
 package com.amneziawg.fork.ui.config
 
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.foundation.text.KeyboardOptions
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -92,7 +98,7 @@ fun ConfigEditorScreen(viewModel: ConfigEditorViewModel) {
         }
     ) { padding ->
         Column(
-            modifier = androidx.compose.foundation.layout.Modifier
+            modifier = androidx.compose.ui.Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .padding(16.dp),
@@ -100,10 +106,10 @@ fun ConfigEditorScreen(viewModel: ConfigEditorViewModel) {
         ) {
             // Basic Config Section
             Card(
-                modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+                modifier = androidx.compose.ui.Modifier.fillMaxWidth()
             ) {
                 androidx.compose.foundation.layout.Column(
-                    modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp),
+                    modifier = androidx.compose.ui.Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(text = stringResource(R.string.basic_settings), fontSize = 18.sp, fontWeight = FontWeight.Bold)
@@ -156,7 +162,7 @@ fun ConfigEditorScreen(viewModel: ConfigEditorViewModel) {
                     )
 
                     androidx.compose.foundation.layout.Row(
-                        modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth(),
+                        modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         ConfigNumberField(
@@ -177,14 +183,14 @@ fun ConfigEditorScreen(viewModel: ConfigEditorViewModel) {
 
             // Routing Rules Section
             Card(
-                modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+                modifier = androidx.compose.ui.Modifier.fillMaxWidth()
             ) {
                 androidx.compose.foundation.layout.Column(
-                    modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp),
+                    modifier = androidx.compose.ui.Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     androidx.compose.foundation.layout.Row(
-                        modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth(),
+                        modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
                         horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween
                     ) {
                         Text(text = stringResource(R.string.routing_rules), fontSize = 18.sp, fontWeight = FontWeight.Bold)
@@ -201,11 +207,11 @@ fun ConfigEditorScreen(viewModel: ConfigEditorViewModel) {
                             text = stringResource(R.string.no_rules_yet),
                             fontSize = 14.sp,
                             color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = androidx.compose.foundation.layout.Modifier.padding(vertical = 16.dp)
+                            modifier = androidx.compose.ui.Modifier.padding(vertical = 16.dp)
                         )
                     } else {
                         LazyColumn(
-                            modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth(),
+                            modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             items(uiState.rules) { rule ->
@@ -223,10 +229,10 @@ fun ConfigEditorScreen(viewModel: ConfigEditorViewModel) {
 
             // Default Action
             Card(
-                modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+                modifier = androidx.compose.ui.Modifier.fillMaxWidth()
             ) {
                 androidx.compose.foundation.layout.Column(
-                    modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp),
+                    modifier = androidx.compose.ui.Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(text = stringResource(R.string.default_action), fontSize = 18.sp, fontWeight = FontWeight.Bold)
@@ -234,7 +240,7 @@ fun ConfigEditorScreen(viewModel: ConfigEditorViewModel) {
                     androidx.compose.material3.RadioButton(
                         selected = uiState.defaultAction == com.amneziawg.fork.model.RoutingAction.ROUTE_VIA_VPN,
                         onClick = { viewModel.onDefaultActionChange(com.amneziawg.fork.model.RoutingAction.ROUTE_VIA_VPN) },
-                        modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+                        modifier = androidx.compose.ui.Modifier.fillMaxWidth()
                     ) {
                         Text(text = stringResource(R.string.route_via_vpn))
                     }
@@ -242,7 +248,7 @@ fun ConfigEditorScreen(viewModel: ConfigEditorViewModel) {
                     androidx.compose.material3.RadioButton(
                         selected = uiState.defaultAction == com.amneziawg.fork.model.RoutingAction.ROUTE_DIRECT,
                         onClick = { viewModel.onDefaultActionChange(com.amneziawg.fork.model.RoutingAction.ROUTE_DIRECT) },
-                        modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+                        modifier = androidx.compose.ui.Modifier.fillMaxWidth()
                     ) {
                         Text(text = stringResource(R.string.route_direct))
                     }
@@ -265,7 +271,7 @@ fun ConfigTextField(
         onValueChange = onValueChange,
         label = { Text(text = label) },
         singleLine = true,
-        modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth(),
+        modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
         isError = isRequired && value.isBlank(),
         supportingText = if (helperText != null) { androidx.compose.material3.Text(text = helperText) } else { null }
     )
@@ -285,7 +291,7 @@ fun ConfigNumberField(
         },
         label = { Text(text = label) },
         singleLine = true,
-        modifier = androidx.compose.foundation.layout.Modifier
+        modifier = androidx.compose.ui.Modifier
             .fillMaxWidth()
             .weight(1f),
         keyboardOptions = androidx.compose.ui.text.input.KeyboardOptions(keyboardType = androidx.compose.ui.text.input.KeyboardType.Number)
@@ -300,15 +306,15 @@ fun RuleEditorItem(
     onDelete: () -> Unit
 ) {
     Card(
-        modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth(),
+        modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
         colors = androidx.compose.material3.CardDefaults.cardColors(containerColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceVariant)
     ) {
         androidx.compose.foundation.layout.Column(
-            modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp),
+            modifier = androidx.compose.ui.Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             androidx.compose.foundation.layout.Row(
-                modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth(),
+                modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
                 horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween
             ) {
                 Text(text = "Rule #${index + 1}", fontSize = 16.sp, fontWeight = FontWeight.Bold)
@@ -336,7 +342,7 @@ fun RuleEditorItem(
                     value = rule.name,
                     onValueChange = { onUpdate(rule.copy(name = it)) },
                     label = { Text(text = "Name") },
-                    modifier = androidx.compose.foundation.layout.Modifier.weight(1f)
+                    modifier = androidx.compose.ui.Modifier.weight(1f)
                 )
             }
 
@@ -354,7 +360,7 @@ fun RuleEditorItem(
                     value = rule.target,
                     onValueChange = { onUpdate(rule.copy(target = it)) },
                     label = { Text(text = "Target (package/domain/IP)") },
-                    modifier = androidx.compose.foundation.layout.Modifier.weight(1f)
+                    modifier = androidx.compose.ui.Modifier.weight(1f)
                 )
             }
 

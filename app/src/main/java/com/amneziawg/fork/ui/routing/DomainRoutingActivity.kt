@@ -1,5 +1,11 @@
 package com.amneziawg.fork.ui.routing
 
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.foundation.text.KeyboardOptions
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -97,7 +103,7 @@ fun DomainRoutingScreen(viewModel: DomainRoutingViewModel) {
         }
     ) { padding ->
         Column(
-            modifier = androidx.compose.foundation.layout.Modifier
+            modifier = androidx.compose.ui.Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .padding(16.dp),
@@ -105,10 +111,10 @@ fun DomainRoutingScreen(viewModel: DomainRoutingViewModel) {
         ) {
             // Add new domain card
             Card(
-                modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+                modifier = androidx.compose.ui.Modifier.fillMaxWidth()
             ) {
                 androidx.compose.foundation.layout.Column(
-                    modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp),
+                    modifier = androidx.compose.ui.Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Text(text = stringResource(R.string.add_domain_rule), fontSize = 18.sp, fontWeight = FontWeight.Bold)
@@ -119,7 +125,7 @@ fun DomainRoutingScreen(viewModel: DomainRoutingViewModel) {
                         label = { Text(text = stringResource(R.string.domain)) },
                         placeholder = { Text(text = "example.com") },
                         singleLine = true,
-                        modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth(),
+                        modifier = androidx.compose.ui.Modifier.fillMaxWidth(),
                         keyboardOptions = androidx.compose.ui.text.input.KeyboardOptions(
                             keyboardType = androidx.compose.ui.text.input.KeyboardType.Uri
                         )
@@ -134,7 +140,7 @@ fun DomainRoutingScreen(viewModel: DomainRoutingViewModel) {
                         )
                         Text(text = stringResource(R.string.regex_pattern))
 
-                        androidx.compose.material3.Spacer(modifier = androidx.compose.foundation.layout.Modifier.weight(1f))
+                        androidx.compose.material3.Spacer(modifier = androidx.compose.ui.Modifier.weight(1f))
 
                         // Action dropdown
                         androidx.compose.material3.Text(text = stringResource(R.string.action))
@@ -172,17 +178,17 @@ fun DomainRoutingScreen(viewModel: DomainRoutingViewModel) {
             // Domain list
             if (uiState.isLoading) {
                 androidx.compose.foundation.layout.Column(
-                    modifier = androidx.compose.foundation.layout.Modifier.fillMaxSize(),
+                    modifier = androidx.compose.ui.Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
                     androidx.compose.material3.CircularProgressIndicator()
-                    Spacer(modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp))
+                    Spacer(modifier = androidx.compose.ui.Modifier.padding(16.dp))
                     Text(text = stringResource(R.string.loading))
                 }
             } else {
                 LazyColumn(
-                    modifier = androidx.compose.foundation.layout.Modifier.fillMaxSize(),
+                    modifier = androidx.compose.ui.Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(uiState.domains) { domain ->
@@ -205,10 +211,10 @@ fun DomainRoutingItem(
     onEdit: () -> Unit
 ) {
     Card(
-        modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+        modifier = androidx.compose.ui.Modifier.fillMaxWidth()
     ) {
         androidx.compose.foundation.layout.Row(
-            modifier = androidx.compose.foundation.layout.Modifier
+            modifier = androidx.compose.ui.Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween,

@@ -107,6 +107,7 @@ dependencies {
 
     // Material3
     implementation("androidx.compose.material3:material3:$material3")
+    implementation("androidx.compose.material:material-icons-extended:1.6.8")
     implementation("androidx.compose.material3:material3-window-size-class:$material3")
 
     // Navigation

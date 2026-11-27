@@ -1,5 +1,11 @@
 package com.amneziawg.fork.ui.routing
 
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.foundation.text.KeyboardOptions
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -95,7 +101,7 @@ fun AppRoutingScreen(viewModel: AppRoutingViewModel) {
         }
     ) { padding ->
         Column(
-            modifier = androidx.compose.foundation.layout.Modifier
+            modifier = androidx.compose.ui.Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .padding(16.dp),
@@ -103,10 +109,10 @@ fun AppRoutingScreen(viewModel: AppRoutingViewModel) {
         ) {
             // Info card
             Card(
-                modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+                modifier = androidx.compose.ui.Modifier.fillMaxWidth()
             ) {
                 androidx.compose.foundation.layout.Column(
-                    modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp),
+                    modifier = androidx.compose.ui.Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
@@ -125,17 +131,17 @@ fun AppRoutingScreen(viewModel: AppRoutingViewModel) {
             // App list
             if (uiState.isLoading) {
                 androidx.compose.foundation.layout.Column(
-                    modifier = androidx.compose.foundation.layout.Modifier.fillMaxSize(),
+                    modifier = androidx.compose.ui.Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
                     androidx.compose.material3.CircularProgressIndicator()
-                    Spacer(modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp))
+                    Spacer(modifier = androidx.compose.ui.Modifier.padding(16.dp))
                     Text(text = stringResource(R.string.loading_apps))
                 }
             } else {
                 LazyColumn(
-                    modifier = androidx.compose.foundation.layout.Modifier.fillMaxSize(),
+                    modifier = androidx.compose.ui.Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(uiState.apps) { app ->
@@ -160,10 +166,10 @@ fun AppRoutingItem(
     onRuleClick: () -> Unit
 ) {
     Card(
-        modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+        modifier = androidx.compose.ui.Modifier.fillMaxWidth()
     ) {
         androidx.compose.foundation.layout.Row(
-            modifier = androidx.compose.foundation.layout.Modifier
+            modifier = androidx.compose.ui.Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween,
@@ -175,7 +181,7 @@ fun AppRoutingItem(
             ) {
                 // App icon placeholder
                 androidx.compose.foundation.layout.Box(
-                    modifier = androidx.compose.foundation.layout.Modifier.size(40.dp)
+                    modifier = androidx.compose.ui.Modifier.size(40.dp)
                         .background(
                             color = androidx.compose.material3.MaterialTheme.colorScheme.primaryContainer,
                             shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp)
@@ -184,7 +190,7 @@ fun AppRoutingItem(
                     Icon(
                         imageVector = androidx.compose.material.icons.Icons.Default.Android,
                         contentDescription = null,
-                        modifier = androidx.compose.foundation.layout.Modifier
+                        modifier = androidx.compose.ui.Modifier
                             .size(24.dp)
                             .align(Alignment.Center),
                         tint = androidx.compose.material3.MaterialTheme.colorScheme.primary

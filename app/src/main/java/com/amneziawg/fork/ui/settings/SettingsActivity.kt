@@ -1,5 +1,11 @@
 package com.amneziawg.fork.ui.settings
 
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.foundation.text.KeyboardOptions
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -82,7 +88,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         }
     ) { padding ->
         Column(
-            modifier = androidx.compose.foundation.layout.Modifier
+            modifier = androidx.compose.ui.Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .padding(16.dp),
@@ -294,10 +300,10 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
 @Composable
 fun SettingsSection(title: String, content: @Composable () -> Unit) {
     Card(
-        modifier = androidx.compose.foundation.layout.Modifier.fillMaxWidth()
+        modifier = androidx.compose.ui.Modifier.fillMaxWidth()
     ) {
         androidx.compose.foundation.layout.Column(
-            modifier = androidx.compose.foundation.layout.Modifier.padding(16.dp),
+            modifier = androidx.compose.ui.Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(text = title, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = androidx.compose.material3.MaterialTheme.colorScheme.primary)
@@ -315,13 +321,13 @@ fun SettingItem(
     onClick: (() -> Unit)? = null
 ) {
     val modifier = if (onClick != null) {
-        androidx.compose.foundation.layout.Modifier
+        androidx.compose.ui.Modifier
             .fillMaxWidth()
             .padding(16.dp)
             .clickable(onClick = onClick)
             .background(androidx.compose.material3.MaterialTheme.colorScheme.surface)
     } else {
-        androidx.compose.foundation.layout.Modifier
+        androidx.compose.ui.Modifier
             .fillMaxWidth()
             .padding(16.dp)
     }
@@ -338,7 +344,7 @@ fun SettingItem(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                modifier = androidx.compose.foundation.layout.Modifier.size(24.dp),
+                modifier = androidx.compose.ui.Modifier.size(24.dp),
                 tint = androidx.compose.material3.MaterialTheme.colorScheme.primary
             )
             androidx.compose.foundation.layout.Column {
