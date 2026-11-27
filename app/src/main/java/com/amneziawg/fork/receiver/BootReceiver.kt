@@ -13,7 +13,7 @@ class BootReceiver : BroadcastReceiver() {
         Timber.d("BootReceiver: ${intent.action}")
 
         when (intent.action) {
-            Intent.ACTION_BOOT_COMPLETED, Intent.ACTION_QUICKBOOT_POWERON -> {
+            Intent.ACTION_BOOT_COMPLETED, "android.intent.action.QUICKBOOT_POWERON" -> {
                 // Check if we should auto-reconnect
                 val prefs = context.getSharedPreferences("amneziawg_prefs", Context.MODE_PRIVATE)
                 val autoReconnect = prefs.getBoolean("auto_reconnect", true)

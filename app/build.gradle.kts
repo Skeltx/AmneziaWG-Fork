@@ -54,13 +54,14 @@ android {
 
     kotlinOptions {
         jvmTarget = "17"
-        freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
+        freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn", "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api")
     }
 
     buildFeatures {
         viewBinding = true
         dataBinding = true
         compose = true
+        buildConfig = true
     }
 
     composeOptions {
@@ -102,6 +103,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycle")
 
     // Material3
     implementation("androidx.compose.material3:material3:$material3")

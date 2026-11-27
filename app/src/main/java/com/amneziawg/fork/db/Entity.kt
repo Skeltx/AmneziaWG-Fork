@@ -1,5 +1,8 @@
 package com.amneziawg.fork.db
 
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Entity
