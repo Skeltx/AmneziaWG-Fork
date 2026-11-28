@@ -46,10 +46,13 @@
   - остальное → `direct`.
 - Domain routing: правило `example.org` добавлено через UI, сохранилось в
   `routing.json`, применилось после reload.
+- Выбор приложения через UI: `AppListDialogFragment` заполняет пакет в поле цели.
 - IPv4-only профиль: TUN без IPv6, IPv6 reject, ошибок `missing IPv6 local address` нет.
 - Остановка последнего туннеля: сервис останавливается, VPN-интерфейс исчезает.
+- Release APK после R8: `libbox.so` загружается, VPN поднимается, per-app
+  `include_package` содержит только UID Chrome/GMS (проверено через `dumpsys connectivity`).
 - `sing-box check` для сгенерированного JSON — OK.
-- `:ui:testDebugUnitTest`, `:ui:assembleDebug`, `:ui:assembleRelease` — OK.
+- `:ui:testDebugUnitTest`, `:ui:lintDebug`, `:ui:assembleDebug`, `:ui:assembleRelease` — OK.
 
 ## Ограничения / что проверить дальше
 

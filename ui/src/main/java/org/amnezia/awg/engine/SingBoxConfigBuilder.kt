@@ -249,8 +249,12 @@ object SingBoxConfigBuilder {
                 .ifEmpty { if (allowIpv6) listOf("0.0.0.0/0", "::/0") else listOf("0.0.0.0/0") }
             json.put("allowed_ips", JSONArray(allowed))
             peer.getPersistentKeepalive().ifPresent { keepalive ->
-                keepalive.split("-").firstOrNull()?.toIntOrNull()?.let {
-                    json.put("persistent_keepalive_interval", it)
+                if (keepalive.contains('-')) {
+                    json.put("persistent_keepalive_interval", keepalive)
+                } else {
+                    keepalive.toIntOrNull()?.let {
+                        json.put("persistent_keepalive_interval", it)
+                    }
                 }
             }
             peers.put(json)
@@ -285,6 +289,13 @@ object SingBoxConfigBuilder {
         }
         iface.getDisableCookies().ifPresent {
             endpoint.put("disable_cookies", parseBool(it))
+        }
+        iface.getRekeyAfterTime().ifPresent { endpoint.put("rekey_after_time", it) }
+        iface.getRekeyTimeout().ifPresent { endpoint.put("rekey_timeout", it) }
+        iface.getRejectAfterTime().ifPresent { endpoint.put("reject_after_time", it) }
+        iface.getKeepaliveTimeout().ifPresent { endpoint.put("keepalive_timeout", it) }
+        iface.getMaxHandshakeAttempts().ifPresent {
+            endpoint.put("max_handshake_attempts", it.toIntOrNull() ?: it)
         }
         return endpoint
     }

@@ -156,6 +156,9 @@ class Application : android.app.Application() {
         }
 
         coroutineScope.launch {
+            // sing-box follows the default interface itself; restarting every endpoint on a
+            // network change would only drop connections and flap the UI.
+            if (backend is SingBoxBackend) return@launch
             try {
                 val activeTunnels = tunnelManager.getTunnels().filter { 
                     it.state == org.amnezia.awg.backend.Tunnel.State.UP 

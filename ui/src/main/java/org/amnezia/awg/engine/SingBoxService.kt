@@ -76,7 +76,6 @@ class SingBoxService : VpnService(), PlatformInterface, CommandServerHandler {
     private var fileDescriptor: ParcelFileDescriptor? = null
     private var networkCallback: ConnectivityManager.NetworkCallback? = null
     private var networkListener: InterfaceUpdateListener? = null
-    private var starting = false
     private var stopping = false
 
     override fun onCreate() {
@@ -116,10 +115,12 @@ class SingBoxService : VpnService(), PlatformInterface, CommandServerHandler {
     // ---------------------------------------------------------------------
 
     private fun startOrReload() {
-        if (starting || stopping) return
-        starting = true
+        if (stopping) return
         val configFile = File(filesDir, CONFIG_FILE)
+        // The worker is single-threaded, so rapid start/reload requests are serialised. Reading
+        // the file inside the task also means the last written config wins.
         worker.execute {
+            if (stopping) return@execute
             try {
                 val config = configFile.readText()
                 require(config.isNotBlank()) { "empty engine config" }
@@ -139,8 +140,6 @@ class SingBoxService : VpnService(), PlatformInterface, CommandServerHandler {
                 EngineController.onError(e)
                 updateNotification("Ошибка: ${e.message ?: e.javaClass.simpleName}")
                 stopSelfSafely()
-            } finally {
-                starting = false
             }
         }
     }

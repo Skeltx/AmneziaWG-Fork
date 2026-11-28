@@ -28,6 +28,8 @@ class SingBoxConfigBuilderTest {
         H3 = 3
         H4 = 4
         I1 = dGVzdC1qdW5r
+        RekeyAfterTime = 120
+        MaxHandshakeAttempts = 18
         [Peer]
         AllowedIPs = 0.0.0.0/0, ::0/0
         Endpoint = 192.0.2.1:51820
@@ -64,6 +66,8 @@ class SingBoxConfigBuilderTest {
         assertEquals(4, endpoint.getInt("jc"))
         assertEquals(1, endpoint.getInt("h1"))
         assertEquals("dGVzdC1qdW5r", endpoint.getString("i1"))
+        assertEquals("120", endpoint.getString("rekey_after_time"))
+        assertEquals(18, endpoint.getInt("max_handshake_attempts"))
 
         File("build/sample-singbox.json").writeText(json)
     }
