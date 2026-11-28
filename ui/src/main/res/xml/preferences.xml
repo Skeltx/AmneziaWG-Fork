@@ -41,4 +41,21 @@
         android:summaryOff="@string/allow_remote_control_intents_summary_off"
         android:summaryOn="@string/allow_remote_control_intents_summary_on"
         android:title="@string/allow_remote_control_intents_title" />
+
+    <PreferenceCategory
+        android:key="auto_tunnel_category"
+        android:title="@string/auto_tunnel_title">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="auto_tunnel_on_domain"
+            android:singleLineTitle="false"
+            android:summaryOff="@string/auto_tunnel_on_domain_summary_off"
+            android:summaryOn="@string/auto_tunnel_on_domain_summary_on"
+            android:title="@string/auto_tunnel_on_domain_title" />
+        <Preference
+            android:key="manage_domain_mappings"
+            android:singleLineTitle="false"
+            android:summary="@string/manage_domain_mappings_summary"
+            android:title="@string/manage_domain_mappings_title" />
+    </PreferenceCategory>
 </androidx.preference.PreferenceScreen>

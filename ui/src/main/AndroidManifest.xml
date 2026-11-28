@@ -102,6 +102,18 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activity.DeepLinkActivity"
+            android:exported="true"
+            android:theme="@style/NoBackgroundTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="amneziawg" />
+            </intent-filter>
+        </activity>
+
         <provider
             android:name=".activity.LogViewerActivity$ExportedLogContentProvider"
             android:authorities="${applicationId}.exported-log"

@@ -1,0 +1,6 @@
+{
+  "chat.openai.com": "tunnel-gpt-chat",
+  "api.openai.com": "tunnel-gpt-chat",
+  "example.com": "tunnel-work",
+  "dev.example.local": "tunnel-dev"
+}

@@ -272,4 +272,18 @@
     <string name="import_disclaimer">Ensure that you obtained the configuration file from a trusted source.\n\nOfficial Amnezia services are available only at <a href="https://amnezia.org">amnezia.org</a>\n</string>
     <string name="tunnel_status_connected">Connected</string>
     <string name="tunnel_status_connecting">Connecting…</string>
+
+    <!-- Auto tunnel on domain open -->
+    <string name="auto_tunnel_title">Авто-туннелирование</string>
+    <string name="auto_tunnel_on_domain_title">Автоматически включать туннель при открытии домена</string>
+    <string name="auto_tunnel_on_domain_summary_on">При открытии ссылок вида amneziawg://домен будет автоматически включаться соответствующий туннель</string>
+    <string name="auto_tunnel_on_domain_summary_off">Автоматическое включение туннелей отключено</string>
+    <string name="manage_domain_mappings_title">Управление картой доменов</string>
+    <string name="manage_domain_mappings_summary">Настроить соответствие доменов туннелям (файл tunnel_map.json)</string>
+    <!-- Deep link auto tunnel -->
+    <string name="deeplink_vpn_permission_required">Без разрешения VPN туннель не включить</string>
+    <string name="deeplink_no_mapping">Для домена %1$s туннель не настроен</string>
+    <string name="deeplink_tunnel_not_found">Туннель %1$s не найден</string>
+    <string name="deeplink_error">Ошибка: %1$s</string>
+    <string name="deeplink_tunnel_enabled">Туннель %1$s включён</string>
 </resources>
