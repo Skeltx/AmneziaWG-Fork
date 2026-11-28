@@ -40,6 +40,12 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
+      - name: Cache sing-box-lx core
+        uses: actions/cache@v4
+        with:
+          path: ui/libs/libbox.aar
+          key: libbox-1.14.4-lx.37
+
       - name: Fetch sing-box-lx core
         run: |
           chmod +x ./scripts/fetch-libbox.sh
