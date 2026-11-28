@@ -13,8 +13,19 @@ Android GUI for [AmneziaWG](https://amnezia.org/learn-more/31_amneziawg) with a
   into routing rules automatically.
 - AmneziaWG **1.x, 2.0 and 3.x** parameters (`Jc/Jmin/Jmax`, `S1–S4`, `H1–H4`, `I1–I5`, header
   protection, padding) are passed to the engine as-is.
-- The UI keeps the existing XML/Material 3 screens and adds a **Routing** screen.
+- The UI keeps the existing XML/Material 3 screens and adds a **Routing** screen; the tunnel
+  list, detail hero, add-tunnel sheet and dark/light themes were redesigned.
 - Minimum Android version: **10 (API 29)**.
+
+## Screenshots
+
+| Main (light) | Main (dark) | Routing |
+|---|---|---|
+| ![Main light](docs/screens/main-light.png) | ![Main dark](docs/screens/main-dark.png) | ![Routing](docs/screens/routing.png) |
+
+| Tunnel detail | Add tunnel |
+|---|---|
+| ![Detail](docs/screens/tunnel-detail.png) | ![Add tunnel](docs/screens/add-tunnel.png) |
 
 ## Building
 
