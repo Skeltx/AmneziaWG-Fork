@@ -28,6 +28,7 @@ import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import org.amnezia.awg.Application
 import org.amnezia.awg.R
+import org.amnezia.awg.activity.RoutingActivity
 import org.amnezia.awg.activity.TunnelCreatorActivity
 import org.amnezia.awg.databinding.ObservableKeyedRecyclerViewAdapter.RowConfigurationHandler
 import org.amnezia.awg.databinding.TunnelListFragmentBinding
@@ -98,6 +99,9 @@ class TunnelListFragment : BaseFragment() {
         binding = TunnelListFragmentBinding.inflate(inflater, container, false)
         val bottomSheet = AddTunnelsSheet()
         binding?.apply {
+            openRouting.setOnClickListener {
+                startActivity(Intent(requireContext(), RoutingActivity::class.java))
+            }
             createFab.setOnClickListener {
                 if (childFragmentManager.findFragmentByTag("BOTTOM_SHEET") != null)
                     return@setOnClickListener

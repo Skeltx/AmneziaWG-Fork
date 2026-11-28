@@ -4,6 +4,7 @@
  */
 package org.amnezia.awg.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -16,6 +17,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import org.amnezia.awg.R
+import org.amnezia.awg.activity.RoutingActivity
 import org.amnezia.awg.backend.Tunnel
 import org.amnezia.awg.databinding.TunnelDetailFragmentBinding
 import org.amnezia.awg.databinding.TunnelDetailPeerBinding
@@ -28,6 +30,11 @@ import kotlinx.coroutines.launch
  * Fragment that shows details about a specific tunnel.
  */
 class TunnelDetailFragment : BaseFragment(), MenuProvider {
+    /** Opens the global split-tunnelling editor from the detail hero card. */
+    fun openRouting(view: View) {
+        startActivity(Intent(view.context, RoutingActivity::class.java))
+    }
+
     private var binding: TunnelDetailFragmentBinding? = null
     private var lastState = Tunnel.State.TOGGLE
     private var timerActive = true

@@ -287,4 +287,11 @@
     <string name="routing_change">Изменить</string>
     <string name="routing_empty">Правил пока нет. Добавьте правило, чтобы пустить приложение или сайт через туннель.</string>
     <string name="routing_invalid_target">Укажите цель</string>
+    <string name="tunnels_title">Туннели</string>
+    <string name="awg_parameters">Параметры AmneziaWG</string>
+    <string name="app_subtitle">Раздельное туннелирование</string>
+    <string name="add_tunnel">Добавить туннель</string>
+    <string name="add_tunnel_sheet_subtitle">Импортируйте конфигурацию или создайте пустой туннель.</string>
+    <string name="empty_tunnels_title">Туннелей пока нет</string>
+    <string name="empty_tunnels_subtitle">Импортируйте конфигурацию или создайте новый туннель.</string>
 </resources>

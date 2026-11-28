@@ -32,42 +32,58 @@
         android:id="@+id/tunnel_list_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/list_item_background"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="7dp"
+        android:background="@drawable/bg_tunnel_card"
         android:descendantFocusability="beforeDescendants"
+        android:elevation="1dp"
         android:focusable="true"
         android:nextFocusRight="@+id/tunnel_switch"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp">
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/tunnel_icon"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/bg_icon_circle"
+            android:contentDescription="@null"
+            android:padding="10dp"
+            android:src="@drawable/ic_icon" />
 
         <LinearLayout
             android:id="@+id/tunnel_info_layout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
+            android:layout_marginStart="14dp"
             android:layout_toStartOf="@+id/tunnel_switch"
+            android:layout_toEndOf="@+id/tunnel_icon"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tunnel_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{key}"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
                 tools:text="@sample/interface_names.json/names/names/name" />
 
             <TextView
                 android:id="@+id/tunnel_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="3dp"
                 android:text="@{item.connectionStatus == ConnectionStatus.CONNECTED ? @string/tunnel_status_connected : @string/tunnel_status_connecting}"
-                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
                 android:textColor="@{item.connectionStatus == ConnectionStatus.CONNECTED ? @color/tunnel_status_connected : @color/tunnel_status_connecting}"
                 android:visibility="@{item.connectionStatus == ConnectionStatus.DISCONNECTED ? android.view.View.GONE : android.view.View.VISIBLE}"
-                tools:text="Подключено"
+                tools:text="Connected"
                 tools:textColor="@color/tunnel_status_connected" />
         </LinearLayout>
 

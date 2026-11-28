@@ -7,6 +7,8 @@
 
         <import type="org.amnezia.awg.backend.Tunnel.State" />
 
+        <import type="org.amnezia.awg.model.ObservableTunnel.ConnectionStatus" />
+
         <import type="org.amnezia.awg.util.ClipboardUtils" />
 
         <variable
@@ -34,15 +36,90 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/detail_hero"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/detail_hero_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@{tunnel.name}"
+                        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@id/tunnel_switch"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="home" />
+
+                    <TextView
+                        android:id="@+id/detail_hero_subtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="AmneziaWG"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/detail_hero_name" />
+
+                    <TextView
+                        android:id="@+id/detail_hero_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@{tunnel.connectionStatus == ConnectionStatus.CONNECTED ? @string/tunnel_status_connected : @string/tunnel_status_connecting}"
+                        android:textAppearance="?attr/textAppearanceLabelMedium"
+                        android:textColor="@{tunnel.connectionStatus == ConnectionStatus.CONNECTED ? @color/tunnel_status_connected : @color/tunnel_status_connecting}"
+                        android:visibility="@{tunnel.connectionStatus == ConnectionStatus.DISCONNECTED ? android.view.View.GONE : android.view.View.VISIBLE}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/detail_hero_subtitle" />
+
+                    <org.amnezia.awg.widget.ToggleSwitch
+                        android:id="@+id/tunnel_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:nextFocusDown="@id/interface_name_text"
+                        android:nextFocusForward="@id/interface_name_text"
+                        app:checked="@{tunnel.state == State.UP}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:onBeforeCheckedChanged="@{fragment::setTunnelState}" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/detail_hero_routing"
+                        style="@style/Widget.Material3.Button.TextButton.Icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:onClick="@{fragment::openRouting}"
+                        android:text="@string/routing"
+                        app:icon="@drawable/ic_routing"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/detail_hero_status" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/tunnel_detail_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/detail_hero">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -56,18 +133,6 @@
                         android:textAppearance="?attr/textAppearanceTitleMedium"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
-                    <org.amnezia.awg.widget.ToggleSwitch
-                        android:id="@+id/tunnel_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:nextFocusDown="@id/interface_name_text"
-                        android:nextFocusForward="@id/interface_name_text"
-                        app:checked="@{tunnel.state == State.UP}"
-                        app:layout_constraintBaseline_toBottomOf="@+id/interface_title"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:onBeforeCheckedChanged="@{fragment::setTunnelState}" />
 
                     <TextView
                         android:id="@+id/interface_name_label"
@@ -276,6 +341,17 @@
                         app:constraint_referenced_ids="listen_port_text,mtu_text" />
 
                     <TextView
+                        android:id="@+id/awg_section_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/awg_parameters"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        android:textColor="?attr/colorPrimary"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/listen_port_mtu_barrier" />
+
+                    <TextView
                         android:id="@+id/junk_packet_count_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -284,7 +360,7 @@
                         android:text="@string/junk_packet_count"
                         android:visibility="@{!config.interface.junkPacketCount.isPresent() ? android.view.View.GONE : android.view.View.VISIBLE}"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/listen_port_mtu_barrier" />
+                        app:layout_constraintTop_toBottomOf="@+id/awg_section_title" />
 
                     <TextView
                         android:id="@+id/junk_packet_count_text"

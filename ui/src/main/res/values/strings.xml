@@ -301,4 +301,11 @@
     <string name="routing_change">Change</string>
     <string name="routing_empty">No rules yet. Add a rule to send an application or site through a tunnel.</string>
     <string name="routing_invalid_target">Enter a target</string>
+    <string name="tunnels_title">Tunnels</string>
+    <string name="awg_parameters">AmneziaWG parameters</string>
+    <string name="app_subtitle">Multi-tunnel split tunnelling</string>
+    <string name="add_tunnel">Add tunnel</string>
+    <string name="add_tunnel_sheet_subtitle">Import a configuration or create an empty tunnel.</string>
+    <string name="empty_tunnels_title">No tunnels yet</string>
+    <string name="empty_tunnels_subtitle">Import a config or create one to get started.</string>
 </resources>
