@@ -2,7 +2,7 @@ name: CI/CD
 
 on:
   push:
-    branches: [main, master, develop]
+    branches: [main, master, develop, "feat/**"]
   pull_request:
     branches: [main, master, develop]
   workflow_dispatch:
@@ -39,6 +39,11 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
+
+      - name: Fetch sing-box-lx core
+        run: |
+          chmod +x ./scripts/fetch-libbox.sh
+          ./scripts/fetch-libbox.sh
 
       - name: Build Debug APK
         run: ./gradlew --no-daemon --stacktrace assembleDebug

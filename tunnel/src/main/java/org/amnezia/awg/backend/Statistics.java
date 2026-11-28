@@ -24,7 +24,7 @@ public class Statistics {
     private final Map<Key, PeerStats> stats = new HashMap<>();
     private long lastTouched = SystemClock.elapsedRealtime();
 
-    Statistics() {
+    public Statistics() {
     }
 
     /**

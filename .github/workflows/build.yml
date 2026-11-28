@@ -39,6 +39,12 @@ jobs:
     - name: Set up Gradle
       uses: gradle/actions/setup-gradle@v4
 
+    - name: Fetch sing-box-lx core
+      shell: bash
+      run: |
+        chmod +x ./scripts/fetch-libbox.sh
+        ./scripts/fetch-libbox.sh
+
     - name: Set up Android SDK
       uses: android-actions/setup-android@v3
       with:

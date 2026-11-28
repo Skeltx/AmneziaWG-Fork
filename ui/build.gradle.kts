@@ -24,6 +24,11 @@ android {
         versionCode = providers.gradleProperty("amneziawgVersionCode").get().toInt()
         versionName = providers.gradleProperty("amneziawgVersionName").get()
         buildConfigField("int", "MIN_SDK_VERSION", minSdk.toString())
+        buildConfigField("String", "SINGBOX_VERSION", "\"1.14.4-lx.37\"")
+        ndk {
+            // libbox ships four ABIs; x86 is only useful for ancient emulators.
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86_64")
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -34,7 +39,7 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            proguardFiles("proguard-android-optimize.txt")
+            proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
             packaging {
                 resources {
                     excludes += "DebugProbesKt.bin"
@@ -60,10 +65,19 @@ android {
         warning += "MissingTranslation"
         warning += "ImpliedQuantity"
     }
+    packaging {
+        jniLibs {
+            // libbox loads its payload from the APK; legacy packaging keeps that path stable.
+            useLegacyPackaging = true
+        }
+    }
 }
 
 dependencies {
     implementation(project(":tunnel"))
+    // sing-box-lx core: AmneziaWG 1.x/2.0/3.x, multi-endpoint routing, TUN and per-app rules.
+    // The AAR is not committed; scripts/fetch-libbox.sh downloads the pinned release.
+    implementation(files("libs/libbox.aar"))
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.annotation)
     implementation(libs.androidx.appcompat)
@@ -79,6 +93,8 @@ dependencies {
     implementation(libs.zxing.android.embedded)
     implementation(libs.kotlinx.coroutines.android)
     coreLibraryDesugaring(libs.desugarJdkLibs)
+    testImplementation(libs.junit)
+    testImplementation("org.json:json:20240303")
 }
 
 tasks.withType<JavaCompile>().configureEach {

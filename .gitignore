@@ -5,6 +5,7 @@
 /.idea/libraries/
 /captures/
 /local.properties
+/ui/libs/*.aar
 .DS_Store
 .cxx/
 Thumbs.db

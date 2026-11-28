@@ -17,10 +17,11 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.google.android.material.color.DynamicColors
+import io.nekohasekai.libbox.Libbox
+import io.nekohasekai.libbox.SetupOptions
 import org.amnezia.awg.backend.Backend
-import org.amnezia.awg.backend.GoBackend
-import org.amnezia.awg.backend.AwgQuickBackend
 import org.amnezia.awg.configStore.FileConfigStore
+import org.amnezia.awg.engine.SingBoxBackend
 import org.amnezia.awg.model.TunnelManager
 import org.amnezia.awg.util.NetworkState
 import org.amnezia.awg.util.NetworkType
@@ -38,6 +39,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.io.File
 import java.lang.ref.WeakReference
 import java.util.Locale
 
@@ -64,25 +66,25 @@ class Application : android.app.Application() {
         }
     }
 
-    private suspend fun determineBackend(): Backend {
-        var backend: Backend? = null
-        if (UserKnobs.enableKernelModule.first() && AwgQuickBackend.hasKernelSupport()) {
-            try {
-                rootShell.start()
-                val awgQuickBackend = AwgQuickBackend(applicationContext, rootShell, toolsInstaller)
-                awgQuickBackend.setMultipleTunnels(UserKnobs.multipleTunnels.first())
-                backend = awgQuickBackend
-                UserKnobs.multipleTunnels.onEach {
-                    awgQuickBackend.setMultipleTunnels(it)
-                }.launchIn(coroutineScope)
-            } catch (ignored: Exception) {
-            }
-        }
-        if (backend == null) {
-            backend = GoBackend(applicationContext)
-            GoBackend.setAlwaysOnCallback { get().applicationScope.launch { get().tunnelManager.restoreState(true) } }
-        }
-        return backend
+    private fun determineBackend(): Backend = SingBoxBackend(applicationContext)
+
+    /**
+     * libbox needs its file layout before the first CommandServer is constructed. Keep it in the
+     * app-private directory: sing-box writes its cache, logs and command socket there.
+     */
+    private fun setupLibbox() {
+        val base = File(filesDir, "engine").apply { mkdirs() }
+        val working = File(base, "work").apply { mkdirs() }
+        val temp = File(cacheDir, "engine").apply { mkdirs() }
+        Libbox.setup(SetupOptions().apply {
+            basePath = base.path
+            workingPath = working.path
+            tempPath = temp.path
+            fixAndroidStack = true
+            logMaxLines = 3000
+            debug = BuildConfig.DEBUG
+            appVersion = BuildConfig.VERSION_NAME
+        })
     }
 
     override fun onCreate() {
@@ -120,6 +122,7 @@ class Application : android.app.Application() {
 
         coroutineScope.launch(Dispatchers.IO) {
             try {
+                setupLibbox()
                 backend = determineBackend()
                 futureBackend.complete(backend!!)
                 networkState.bindNetworkListener()
