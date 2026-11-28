@@ -117,15 +117,15 @@ class TunnelManager(private val configStore: ConfigStore) : BaseObservable() {
                 val statusCallback = object : StatusCallback {
                     override fun onStatusChanged(connected: Boolean) {
                         applicationScope.launch(Dispatchers.Main) {
-                            // Find the currently active tunnel
-                            val activeTunnel = tunnelMap.firstOrNull { it.state == Tunnel.State.UP }
-                            if (activeTunnel != null) {
-                                val newStatus = if (connected) {
-                                    ObservableTunnel.ConnectionStatus.CONNECTED
-                                } else {
-                                    ObservableTunnel.ConnectionStatus.CONNECTING
-                                }
-                                activeTunnel.onConnectionStatusChanged(newStatus)
+                            val newStatus = if (connected) {
+                                ObservableTunnel.ConnectionStatus.CONNECTED
+                            } else {
+                                ObservableTunnel.ConnectionStatus.CONNECTING
+                            }
+                            // With several active endpoints, every UP tunnel is presented as
+                            // connected; per-tunnel handshake details will come from libbox later.
+                            for (tunnel in tunnelMap.filter { it.state == Tunnel.State.UP }) {
+                                tunnel.onConnectionStatusChanged(newStatus)
                             }
                         }
                     }

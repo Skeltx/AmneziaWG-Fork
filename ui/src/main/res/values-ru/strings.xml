@@ -272,4 +272,19 @@
     <string name="import_disclaimer">Убедитесь, что вы получили файл конфигурации в надёжном источнике.\n\nОфициальные сервисы Amnezia доступны только на сайте <a href="https://storage.googleapis.com/amnezia/amnezia.org">amnezia.org</a>\n</string>
     <string name="tunnel_status_connected">Подключено</string>
     <string name="tunnel_status_connecting">Подключение…</string>
+    <!-- Split tunnelling / routing -->
+    <string name="routing">Маршрутизация</string>
+    <string name="routing_default">Маршрут по умолчанию</string>
+    <string name="routing_direct">Напрямую</string>
+    <string name="routing_block">Блокировать</string>
+    <string name="routing_add_rule">Добавить правило</string>
+    <string name="routing_app">Приложение</string>
+    <string name="routing_domain">Домен</string>
+    <string name="routing_ip">IP / CIDR</string>
+    <string name="routing_target">Цель (пакет, домен или CIDR)</string>
+    <string name="routing_outbound">Через</string>
+    <string name="routing_pick_app">Выбрать приложение</string>
+    <string name="routing_change">Изменить</string>
+    <string name="routing_empty">Правил пока нет. Добавьте правило, чтобы пустить приложение или сайт через туннель.</string>
+    <string name="routing_invalid_target">Укажите цель</string>
 </resources>

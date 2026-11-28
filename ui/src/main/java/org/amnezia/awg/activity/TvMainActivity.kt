@@ -11,6 +11,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.net.VpnService
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -36,7 +37,6 @@ import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.amnezia.awg.Application
 import org.amnezia.awg.R
-import org.amnezia.awg.backend.GoBackend
 import org.amnezia.awg.backend.Tunnel
 import org.amnezia.awg.databinding.Keyed
 import org.amnezia.awg.databinding.ObservableKeyedArrayList
@@ -156,13 +156,11 @@ class TvMainActivity : AppCompatActivity() {
                                 Log.e(TAG, message, e)
                             }
                         } else {
-                            if (Application.getBackend() is GoBackend) {
-                                val intent = GoBackend.VpnService.prepare(binding.root.context)
-                                if (intent != null) {
-                                    pendingTunnel = item
-                                    permissionActivityResultLauncher.launch(intent)
-                                    return@launch
-                                }
+                            val intent = VpnService.prepare(binding.root.context)
+                            if (intent != null) {
+                                pendingTunnel = item
+                                permissionActivityResultLauncher.launch(intent)
+                                return@launch
                             }
                             setTunnelStateWithPermissionsResult(item)
                         }

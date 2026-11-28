@@ -16,6 +16,7 @@ import org.amnezia.awg.R
 import org.amnezia.awg.backend.Backend
 import org.amnezia.awg.backend.GoBackend
 import org.amnezia.awg.backend.AwgQuickBackend
+import org.amnezia.awg.engine.SingBoxBackend
 import org.amnezia.awg.util.ErrorMessages
 import org.amnezia.awg.util.lifecycleScope
 import kotlinx.coroutines.Dispatchers
@@ -43,6 +44,7 @@ class VersionPreference(context: Context, attrs: AttributeSet?) : Preference(con
         private fun getBackendPrettyName(context: Context, backend: Backend) = when (backend) {
             is AwgQuickBackend -> context.getString(R.string.type_name_kernel_module)
             is GoBackend -> context.getString(R.string.type_name_go_userspace)
+            is SingBoxBackend -> "sing-box-lx"
             else -> ""
         }
     }

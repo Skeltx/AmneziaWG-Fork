@@ -286,4 +286,19 @@
     <string name="deeplink_tunnel_not_found">Туннель %1$s не найден</string>
     <string name="deeplink_error">Ошибка: %1$s</string>
     <string name="deeplink_tunnel_enabled">Туннель %1$s включён</string>
+    <!-- Split tunnelling / routing -->
+    <string name="routing">Routing</string>
+    <string name="routing_default">Default route</string>
+    <string name="routing_direct">Direct</string>
+    <string name="routing_block">Block</string>
+    <string name="routing_add_rule">Add rule</string>
+    <string name="routing_app">Application</string>
+    <string name="routing_domain">Domain</string>
+    <string name="routing_ip">IP / CIDR</string>
+    <string name="routing_target">Target (package, domain or CIDR)</string>
+    <string name="routing_outbound">Route through</string>
+    <string name="routing_pick_app">Choose application</string>
+    <string name="routing_change">Change</string>
+    <string name="routing_empty">No rules yet. Add a rule to send an application or site through a tunnel.</string>
+    <string name="routing_invalid_target">Enter a target</string>
 </resources>

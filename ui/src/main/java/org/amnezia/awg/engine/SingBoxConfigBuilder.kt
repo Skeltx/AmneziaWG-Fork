@@ -20,6 +20,12 @@ object SingBoxConfigBuilder {
         require(active.isNotEmpty()) { "no active tunnels" }
 
         val tags = active.keys.associateWith { tunnelTag(it) }
+        // A config with only IPv4 addresses cannot carry IPv6 through its WireGuard endpoint.
+        // Keep such a profile IPv4-only instead of failing every AAAA connection with
+        // "missing IPv6 local address".
+        val hasIpv6 = active.values.any { config ->
+            config.getInterface().getAddresses().any { it.getAddress() is java.net.Inet6Address }
+        }
 
         // The old tunnel editor stores per-app include/exclude lists in the .conf file. Keep
         // those lists meaningful by turning them into routing rules, with explicit rules first.
@@ -55,7 +61,6 @@ object SingBoxConfigBuilder {
                     put("type", "https")
                     put("tag", DNS_REMOTE)
                     put("server", "1.1.1.1")
-                    put("detour", "direct")
                 })
             })
             put("final", DNS_REMOTE)
@@ -70,6 +75,12 @@ object SingBoxConfigBuilder {
         val routeRules = JSONArray()
         // Sniff before matching so domain rules also work for HTTPS/QUIC and plain HTTP.
         routeRules.put(JSONObject().put("action", "sniff"))
+        if (!hasIpv6) {
+            routeRules.put(JSONObject().apply {
+                put("ip_version", 6)
+                put("action", "reject")
+            })
+        }
 
         for (rule in allRules) {
             if (!rule.enabled) continue
@@ -130,7 +141,10 @@ object SingBoxConfigBuilder {
         val inbound = JSONObject().apply {
             put("type", "tun")
             put("tag", "tun-in")
-            put("address", JSONArray().put(TUN_IPV4).put(TUN_IPV6))
+            put("address", JSONArray().apply {
+                put(TUN_IPV4)
+                if (hasIpv6) put(TUN_IPV6)
+            })
             put("mtu", 1500)
             put("auto_route", true)
             put("strict_route", false)
@@ -147,16 +161,22 @@ object SingBoxConfigBuilder {
 
         val endpoints = JSONArray()
         for ((name, config) in active) {
-            endpoints.put(endpoint(tags.getValue(name), config))
+            endpoints.put(endpoint(tags.getValue(name), config, hasIpv6))
         }
         root.put("endpoints", endpoints)
-        root.put("outbounds", JSONArray().put(JSONObject().apply {
-            put("type", "direct")
-            put("tag", "direct")
-        }))
+        root.put("outbounds", JSONArray().apply {
+            put(JSONObject().apply {
+                put("type", "direct")
+                put("tag", "direct")
+            })
+            put(JSONObject().apply {
+                put("type", "block")
+                put("tag", "block")
+            })
+        })
 
         val finalTag = when (defaultOutbound) {
-            "direct", "block" -> "direct"
+            "direct", "block" -> defaultOutbound
             else -> tags[defaultOutbound] ?: "direct"
         }
         root.put("route", JSONObject().apply {
@@ -197,7 +217,7 @@ object SingBoxConfigBuilder {
         return matcher
     }
 
-    private fun endpoint(tag: String, config: Config): JSONObject {
+    private fun endpoint(tag: String, config: Config, allowIpv6: Boolean): JSONObject {
         val iface = config.getInterface()
         val endpoint = JSONObject()
         endpoint.put("type", "wireguard")
@@ -225,7 +245,8 @@ object SingBoxConfigBuilder {
                 json.put("pre_shared_key", peer.getPreSharedKey().get().toBase64())
             }
             val allowed = peer.getAllowedIps().map { it.toString() }
-                .ifEmpty { listOf("0.0.0.0/0", "::/0") }
+                .filter { allowIpv6 || !it.contains(':') }
+                .ifEmpty { if (allowIpv6) listOf("0.0.0.0/0", "::/0") else listOf("0.0.0.0/0") }
             json.put("allowed_ips", JSONArray(allowed))
             peer.getPersistentKeepalive().ifPresent { keepalive ->
                 keepalive.split("-").firstOrNull()?.toIntOrNull()?.let {

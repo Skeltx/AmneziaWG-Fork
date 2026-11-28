@@ -1,5 +1,6 @@
 package org.amnezia.awg.activity
 
+import android.net.VpnService
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -9,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import org.amnezia.awg.Application
 import org.amnezia.awg.R
-import org.amnezia.awg.backend.GoBackend
 import org.amnezia.awg.backend.Tunnel
 import org.amnezia.awg.model.ObservableTunnel
 import org.json.JSONObject
@@ -64,7 +64,7 @@ class DeepLinkActivity : ComponentActivity() {
                     return@launch
                 }
 
-                val permissionIntent = GoBackend.VpnService.prepare(this@DeepLinkActivity)
+                val permissionIntent = VpnService.prepare(this@DeepLinkActivity)
                 if (permissionIntent != null) {
                     pendingTunnel = tunnel
                     vpnPermissionLauncher.launch(permissionIntent)

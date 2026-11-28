@@ -5,6 +5,7 @@
 package org.amnezia.awg.fragment
 
 import android.content.Context
+import android.net.VpnService
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -18,7 +19,6 @@ import org.amnezia.awg.Application
 import org.amnezia.awg.R
 import org.amnezia.awg.activity.BaseActivity
 import org.amnezia.awg.activity.BaseActivity.OnSelectedTunnelChangedListener
-import org.amnezia.awg.backend.GoBackend
 import org.amnezia.awg.backend.Tunnel
 import org.amnezia.awg.databinding.TunnelDetailFragmentBinding
 import org.amnezia.awg.databinding.TunnelListItemBinding
@@ -66,22 +66,20 @@ abstract class BaseFragment : Fragment(), OnSelectedTunnelChangedListener {
         } ?: return
         val activity = activity ?: return
         activity.lifecycleScope.launch {
-            if (Application.getBackend() is GoBackend) {
-                try {
-                    val intent = GoBackend.VpnService.prepare(activity)
-                    if (intent != null) {
-                        pendingTunnel = tunnel
-                        pendingTunnelUp = checked
-                        permissionActivityResultLauncher.launch(intent)
-                        return@launch
-                    }
-                } catch (e: Throwable) {
-                    val message = activity.getString(R.string.error_prepare, ErrorMessages[e])
-                    Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-                        .setAnchorView(view.findViewById(R.id.create_fab))
-                        .show()
-                    Log.e(TAG, message, e)
+            try {
+                val intent = VpnService.prepare(activity)
+                if (intent != null) {
+                    pendingTunnel = tunnel
+                    pendingTunnelUp = checked
+                    permissionActivityResultLauncher.launch(intent)
+                    return@launch
                 }
+            } catch (e: Throwable) {
+                val message = activity.getString(R.string.error_prepare, ErrorMessages[e])
+                Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+                    .setAnchorView(view.findViewById(R.id.create_fab))
+                    .show()
+                Log.e(TAG, message, e)
             }
             setTunnelStateWithPermissionsResult(tunnel, checked)
         }

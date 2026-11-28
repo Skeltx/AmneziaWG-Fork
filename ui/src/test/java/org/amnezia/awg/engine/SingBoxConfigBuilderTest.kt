@@ -67,4 +67,30 @@ class SingBoxConfigBuilderTest {
 
         File("build/sample-singbox.json").writeText(json)
     }
+
+    @Test
+    fun ipv4OnlyProfileDoesNotAdvertiseIpv6() {
+        val ipv4Only = sample.replace(
+            "Address = 192.0.2.2/32,2001:db8:ffff:ffff:ffff:ffff:ffff:ffff/128",
+            "Address = 192.0.2.2/32",
+        )
+        val config = Config.parse(BufferedReader(StringReader(ipv4Only)))
+        val json = SingBoxConfigBuilder.build(mapOf("home" to config), RoutingSettings())
+        val root = JSONObject(json)
+
+        val tunAddresses = root.getJSONArray("inbounds").getJSONObject(0).getJSONArray("address")
+        assertEquals(1, tunAddresses.length())
+        assertEquals("172.19.0.1/30", tunAddresses.getString(0))
+
+        val rules = root.getJSONObject("route").getJSONArray("rules")
+        assertEquals("sniff", rules.getJSONObject(0).getString("action"))
+        assertEquals(6, rules.getJSONObject(1).getInt("ip_version"))
+        assertEquals("reject", rules.getJSONObject(1).getString("action"))
+
+        val allowed = root.getJSONArray("endpoints").getJSONObject(0)
+            .getJSONArray("peers").getJSONObject(0).getJSONArray("allowed_ips")
+        for (i in 0 until allowed.length()) {
+            assertTrue(!allowed.getString(i).contains(':'))
+        }
+    }
 }

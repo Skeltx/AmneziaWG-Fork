@@ -21,6 +21,7 @@ import android.os.ParcelFileDescriptor
 import android.os.Process
 import android.system.OsConstants
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import io.nekohasekai.libbox.CommandServer
@@ -512,6 +513,7 @@ class SingBoxService : VpnService(), PlatformInterface, CommandServerHandler {
         while (iterator.hasNext()) block(iterator.next())
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun RoutePrefix.toIpPrefix(): IpPrefix =
         IpPrefix(InetAddress.getByName(address()), prefix())
 
