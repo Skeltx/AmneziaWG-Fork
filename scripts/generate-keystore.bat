@@ -1,6 +1,6 @@
 @echo off
-REM Скрипт для генерации keystore для release-сборки (Windows)
-REM Запуск: scripts\generate-keystore.bat
+REM Generate Release Keystore for Android
+REM Run: scripts\generate-keystore.bat
 
 chcp 65001 >nul
 setlocal enabledelayedexpansion
@@ -10,53 +10,60 @@ set ALIAS=release
 set VALIDITY=10000
 set KEYSIZE=2048
 
-echo === Генерация Release Keystore ===
+echo =========================================
+echo Generate Release Keystore
+echo =========================================
 echo.
 
-REM Проверяем, не существует ли уже
+REM Check if file exists
 if exist "%KEYSTORE_FILE%" (
-    echo ⚠️  Файл %KEYSTORE_FILE% уже существует!
-    set /p REPLY="Перезаписать? (y/N): "
+    echo WARNING: File %KEYSTORE_FILE% already exists!
+    set /p REPLY="Overwrite? (y/N): "
     if /i not "!REPLY!"=="y" (
-        echo Отмена.
+        echo Cancelled.
         exit /b 1
     )
 )
 
-REM Запрашиваем пароли
-set /p STOREPASS="Введите пароль для keystore (min 6 символов): "
-set /p STOREPASS_CONFIRM="Подтвердите пароль: "
+echo.
+echo Enter passwords (min 6 chars):
+echo.
 
-if not "!STOREPASS!"=="!STOREPASS_CONFIRM!" (
-    echo ❌ Пароли не совпадают!
+set /p STOREPASS="Keystore password: "
+set /p STOREPASS2="Confirm password:  "
+
+if not "!STOREPASS!"=="!STOREPASS2!" (
+    echo ERROR: Passwords do not match!
     exit /b 1
 )
 
 if "!STOREPASS!"=="" (
-    echo ❌ Пароль не может быть пустым!
+    echo ERROR: Password cannot be empty!
     exit /b 1
 )
 
-set /p KEYPRESS="Введите пароль для ключа (Enter = тот же что keystore): "
-
+set /p KEYPRESS="Key password (Enter = same as keystore): "
 if "!KEYPASS!"=="" set KEYPASS=!STOREPASS!
 
-REM Данные для сертификата
-set /p CN="Ваше имя/организация (CN): "
-set /p OU="Организационная единица (OU): "
-set /p O="Организация (O): "
-set /p L="Город (L): "
-set /p ST="Штат/Регион (ST): "
-set /p C="Код страны (C) [RU]: "
+echo.
+echo Certificate details:
+echo.
+
+set /p CN="Your name/org (CN): "
+set /p OU="Organizational unit (OU): "
+set /p O="Organization (O): "
+set /p L="City (L): "
+set /p ST="State/Region (ST): "
+set /p C="Country code (C) [RU]: "
 if "!C!"=="" set C=RU
 
 set DNAME=CN=!CN!, OU=!OU!, O=!O!, L=!L!, ST=!ST!, C=!C!
 
 echo.
-echo === Генерация keystore ===
-echo Файл: %KEYSTORE_FILE%
+echo Generating keystore...
+echo File: %KEYSTORE_FILE%
 echo Alias: %ALIAS%
-echo DNAME: %DNAME%
+echo DN: %DNAME%
 echo.
 
 keytool -genkeypair -v ^
@@ -70,22 +77,24 @@ keytool -genkeypair -v ^
   -dname "%DNAME%"
 
 if errorlevel 1 (
-    echo ❌ Ошибка при генерации keystore
+    echo ERROR: Failed to generate keystore
     exit /b 1
 )
 
 echo.
-echo ✅ Keystore создан: %KEYSTORE_FILE%
-echo.
-echo === Для GitHub Secrets (скопируйте значения) ===
+echo SUCCESS: Keystore created: %KEYSTORE_FILE%
 echo.
 
-REM Base64 encoding для Windows
+REM Base64 encode for GitHub Secrets
 certutil -encode "%KEYSTORE_FILE%" "%KEYSTORE_FILE%.b64" >nul
-type "%KEYSTORE_FILE%.b64" | findstr /v /c:"BEGIN CERTIFICATE" /c:"END CERTIFICATE" > "%KEYSTORE_FILE%.b64.clean"
+type "%KEYSTORE_FILE%.b64" | findstr /v "BEGIN CERTIFICATE" | findstr /v "END CERTIFICATE" > "%KEYSTORE_FILE%.b64.clean"
 set /p BASE64_VAL=<"%KEYSTORE_FILE%.b64.clean"
 del "%KEYSTORE_FILE%.b64" "%KEYSTORE_FILE%.b64.clean"
 
+echo =========================================
+echo GitHub Secrets (copy these values):
+echo =========================================
+echo.
 echo KEYSTORE_BASE64:
 echo %BASE64_VAL%
 echo.
@@ -93,14 +102,16 @@ echo KEYSTORE_PASSWORD: %STOREPASS%
 echo KEY_ALIAS: %ALIAS%
 echo KEY_PASSWORD: %KEYPASS%
 echo.
-echo === Добавьте в GitHub: ===
-echo gh secret set KEYSTORE_BASE64   ^< вставьте base64 строку выше
-echo gh secret set KEYSTORE_PASSWORD ^< вставьте пароль
-echo gh secret set KEY_ALIAS         ^< вставьте alias
-echo gh secret set KEY_PASSWORD      ^< вставьте пароль ключа
+echo =========================================
+echo Add to GitHub: Settings -> Secrets -> Actions
+echo =========================================
+echo gh secret set KEYSTORE_BASE64
+echo gh secret set KEYSTORE_PASSWORD
+echo gh secret set KEY_ALIAS
+echo gh secret set KEY_PASSWORD
 echo.
-echo ⚠️  ВАЖНО: Сохраните %KEYSTORE_FILE% и пароли в безопасном месте!
-echo    Без них нельзя будет обновлять приложение в Play Store.
-echo    Файл %KEYSTORE_FILE% уже в .gitignore и НЕ попадёт в git.
-
+echo IMPORTANT: Save %KEYSTORE_FILE% and passwords securely!
+echo Without them you cannot update app in Play Store.
+echo File %KEYSTORE_FILE% is in .gitignore and will NOT be committed.
+echo.
 pause
