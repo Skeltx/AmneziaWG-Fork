@@ -35,7 +35,17 @@ object EngineController {
 
     fun reload(context: Context) = send(context, ACTION_RELOAD)
 
-    fun stop(context: Context) = send(context, ACTION_STOP)
+    fun stop(context: Context) {
+        // A VpnService can stay alive while the system holds the VPN binding, so ask the
+        // service to close the command server and the TUN itself. Fall back to stopService if
+        // a foreground-service start is not allowed in the current process state.
+        val intent = Intent(context, SingBoxService::class.java).setAction(ACTION_STOP)
+        runCatching { ContextCompat.startForegroundService(context, intent) }
+            .onFailure {
+                Log.w(TAG, "cannot start stop command, stopping service", it)
+                runCatching { context.stopService(intent) }
+            }
+    }
 
     fun onStarted() {
         running = true

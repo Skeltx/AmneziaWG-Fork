@@ -69,7 +69,6 @@ class SettingsActivity : AppCompatActivity() {
             }
             val awgQuickOnlyPrefs = arrayOf(
                 preferenceManager.findPreference("tools_installer"),
-                preferenceManager.findPreference("restore_on_boot"),
                 preferenceManager.findPreference<Preference>("multiple_tunnels")
             ).filterNotNull()
             awgQuickOnlyPrefs.forEach { it.isVisible = false }
