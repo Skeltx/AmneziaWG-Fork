@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<full-backup-content>
-    <include domain="database" path="amneziawg_database" />
-    <include domain="sharedpref" path="amneziawg_prefs" />
-    <include domain="file" path="exports" />
-    <exclude domain="database" path="amneziawg_database" table="vpn_connection_logs" />
-</full-backup-content>
